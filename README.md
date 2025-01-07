@@ -29,29 +29,29 @@ The Smart Security and Environmental Monitoring System is an integrated solution
 
 •	Sensors:
 
-   o  DHT11 (Temperature and Humidity sensor)
+   -  DHT11 (Temperature and Humidity sensor)
 
-   o	Ultrasonic Sensor (HC-SR04)
+   -	Ultrasonic Sensor (HC-SR04)
    
-   o	Photocell (Light sensor)
+   -	Photocell (Light sensor)
    
 •	Actuators:
 
-   o	Buzzer
+   -	Buzzer
    
-   o	LED (White)
+   -	LED (White)
    
-   o	DC Motor (Fan)
+   -	DC Motor (Fan)
    
 •	Additional Components:
 
-   o	Motor Driver Module (L293D)
-   
-   o	Breadboard power supply
+   -	Motor Driver Module (L293D)
 
-   o	Resistors 
+   -	Breadboard power supply
 
-   o	Breadboard and connecting wires
+   -	Resistors 
+
+   -	Breadboard and connecting wires
 
 3.2 Software
 
@@ -59,7 +59,7 @@ The Smart Security and Environmental Monitoring System is an integrated solution
 
 •	Libraries:
 
-   o	SimpleDHT.h (for DHT11 sensor)
+   -	SimpleDHT.h (for DHT11 sensor)
 
 
 4. System Design
@@ -72,9 +72,9 @@ The system integrates sensors and actuators into the ESP8266 microcontroller. Th
 
 •	Ultrasonic Sensor:
 
-   o	TRIG pin to GPIO D2
+   -	TRIG pin to GPIO D2
    
-   o	ECHO pin to GPIO D3
+   -	ECHO pin to GPIO D3
    
 •	Photocell: Analog output connected to A0.
 
@@ -84,9 +84,9 @@ The system integrates sensors and actuators into the ESP8266 microcontroller. Th
 
 •	Motor Driver:
 
-   o	Motor speed pin to GPIO D5
+   -	Motor speed pin to GPIO D5
    
-   o	Direction pins (DIRA, DIRB) to GPIO D6 and D7, respectively.
+   -	Direction pins (DIRA, DIRB) to GPIO D6 and D7, respectively.
 
 
 5. Functional Description
@@ -113,11 +113,11 @@ The system integrates sensors and actuators into the ESP8266 microcontroller. Th
 
 2.	Based on sensor inputs, the microcontroller makes decisions to:
 
-  	o	Activate the buzzer for security alerts.
+  	-	Activate the buzzer for security alerts.
 
-  	o	Turn on/off the LED based on light intensity from the environment.
+  	-	Turn on/off the LED based on light intensity from the environment.
 
-  	o	Turn on/off the fan for temperature regulation.
+  	-	Turn on/off the fan for temperature regulation.
 
 3.	Feedback is displayed via the serial monitor for debugging and monitoring.
    
@@ -130,25 +130,25 @@ The system’s code is written in C++ using the Arduino IDE. It includes the fol
 
 •	setup():
    
-   o	Initializes sensor and actuator pins.
+   -	Initializes sensor and actuator pins.
    
-   o	Configures serial communication.
+   -	Configures serial communication.
 
 •	loop():
    
-   o	Reads sensor data.
+   -	Reads sensor data.
    
-   o	Processes data to determine actuator states.
+   -	Processes data to determine actuator states.
    
-   o	Controls actuators based on logic.
+   -	Controls actuators based on logic.
 
 •	Helper Functions:
 
-   o	readSensors(): Reads data from all sensors.
+   -	readSensors(): Reads data from all sensors.
 
-   o	controlActuators(): Controls actuators based on sensor data.
+   -	controlActuators(): Controls actuators based on sensor data.
    
-   o	measureDistance(): Calculates the distance using the ultrasonic sensor.
+   -	measureDistance(): Calculates the distance using the ultrasonic sensor.
 
 6.2 Key Features
 
