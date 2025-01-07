@@ -4,14 +4,17 @@ All-In-One: Environmental and Security System
 The Smart Security and Environmental Monitoring System is an integrated solution designed to enhance safety and comfort in residential or commercial spaces. By utilizing multiple sensors and actuators, the system provides real-time monitoring and response capabilities for environmental conditions and security threats. This document provides a comprehensive overview of the project, including its components, implementation, and functionalities.
 
 2. Objectives
+   
 •	Monitor environmental parameters such as temperature, humidity, and light intensity.
+
 •	Detect motion using an ultrasonic sensor.
+
 •	Provide immediate alerts using a buzzer.
 •	Control a motorized fan for temperature regulation.
 •	Activating the light of a LED based on low light conditions.
 •	Integrate and automate all components into a cohesive system.
 
-3. Components
+4. Components
 3.1 Hardware
 •	Microcontroller: ESP8266 (NodeMCU)
 •	Sensors:
