@@ -1,9 +1,9 @@
-All-In-One: Environmental and Security System
+All-In-One: Environmental and Security System (IoT)
 
 
 1. Introduction
    
-The Smart Security and Environmental Monitoring System is an integrated solution designed to enhance safety and comfort in residential or commercial spaces. By utilizing multiple sensors and actuators, the system provides real-time monitoring and response capabilities for environmental conditions and security threats. This document provides a comprehensive overview of the project, including its components, implementation, and functionalities.
+The Smart Security and Environmental Monitoring System is an integrated IoT solution designed to enhance safety and comfort in residential or commercial spaces. By utilizing multiple sensors and actuators connected to an ESP8266 Wi-Fi microcontroller, the system provides real-time monitoring and remote control capabilities for environmental conditions and security threats — accessible from any device on the local network via a built-in web dashboard. This document provides a comprehensive overview of the project, including its components, implementation, and functionalities.
 
 
 2. Objectives
@@ -19,6 +19,10 @@ The Smart Security and Environmental Monitoring System is an integrated solution
 •	Activating the light of a LED based on low light conditions.
 
 •	Integrate and automate all components into a cohesive system.
+
+•	Enable remote monitoring of all sensor readings through a web dashboard.
+
+•	Enable remote control of actuators (fan, LED) from any browser on the local network.
 
 
 3. Components
@@ -60,6 +64,10 @@ The Smart Security and Environmental Monitoring System is an integrated solution
 •	Libraries:
 
    -	SimpleDHT.h (for DHT11 sensor)
+
+   -	ESP8266WiFi.h (built into ESP8266 Arduino core — no extra installation needed)
+
+   -	ESP8266WebServer.h (built into ESP8266 Arduino core — no extra installation needed)
 
 
 4. System Design
@@ -120,11 +128,59 @@ The system integrates sensors and actuators into the ESP8266 microcontroller. Th
   	-	Turn on/off the fan for temperature regulation.
 
 3.	Feedback is displayed via the serial monitor for debugging and monitoring.
-   
 
-6. Software Implementation
+4.	The built-in web server continuously serves a live dashboard — open http://<device-IP> in any browser on the same network to view all readings and control actuators remotely.
 
-6.1 Code Overview
+
+6. IoT / Web Features
+
+6.1 Wi-Fi Setup
+
+Before uploading the sketch, open mainprogram.ino and replace the placeholder credentials near the top of the file:
+
+   const char* WIFI_SSID     = "YOUR_WIFI_SSID";
+   const char* WIFI_PASSWORD = "YOUR_WIFI_PASSWORD";
+
+After uploading, open the Arduino IDE Serial Monitor (115200 baud). The ESP8266 will print its IP address once connected, for example:
+
+   Wi-Fi connected! Dashboard available at: http://192.168.1.42
+
+6.2 Web Dashboard
+
+Open the printed URL in any browser on the same Wi-Fi network. The dashboard:
+
+•	Displays all sensor readings (Temperature, Humidity, Light Level, Distance) as live cards.
+
+•	Shows the current state of each actuator (Fan ON/OFF, LED ON/OFF, Buzzer triggered/clear).
+
+•	Auto-refreshes every 3 seconds using a background JavaScript fetch so only the data updates, not the whole page.
+
+•	Works on mobile devices (responsive grid layout, dark theme).
+
+6.3 REST API
+
+A lightweight JSON endpoint is available for integrations or custom dashboards:
+
+   GET /api/sensors
+
+Example response:
+
+   {"temperature":24,"humidity":55,"light":312,"distance":42,"fan":true,"led":false,"buzzer":false}
+
+6.4 Remote Control Endpoints
+
+The following endpoints let you control actuators from any HTTP client (browser, curl, mobile app):
+
+   GET /fan/on    — turn the fan ON  (manual override)
+   GET /fan/off   — turn the fan OFF (manual override)
+   GET /led/on    — turn the LED ON  (manual override)
+   GET /led/off   — turn the LED OFF (manual override)
+
+The dashboard includes buttons for each of these. When a manual command is sent, the automatic sensor-based logic for that actuator is bypassed until the board is reset.
+
+7. Software Implementation
+
+7.1 Code Overview
 
 The system’s code is written in C++ using the Arduino IDE. It includes the following functions:
 
@@ -134,8 +190,12 @@ The system’s code is written in C++ using the Arduino IDE. It includes the fol
    
    -	Configures serial communication.
 
+   -	Connects to Wi-Fi and starts the web server.
+
 •	loop():
    
+   -	Handles incoming web requests (server.handleClient()).
+
    -	Reads sensor data.
    
    -	Processes data to determine actuator states.
@@ -146,11 +206,17 @@ The system’s code is written in C++ using the Arduino IDE. It includes the fol
 
    -	readSensors(): Reads data from all sensors.
 
-   -	controlActuators(): Controls actuators based on sensor data.
+   -	controlActuators(): Controls actuators based on sensor data (respects manual overrides).
    
    -	measureDistance(): Calculates the distance using the ultrasonic sensor.
 
-6.2 Key Features
+   -	handleRoot(): Serves the HTML web dashboard.
+
+   -	handleSensorsAPI(): Returns sensor data as JSON.
+
+   -	handleFanOn/Off(), handleLedOn/Off(): Handle remote actuator control.
+
+7.2 Key Features
 
 •	Modular design for easy updates and expansion.
 
@@ -158,7 +224,9 @@ The system’s code is written in C++ using the Arduino IDE. It includes the fol
 
 •	Real-time response to environmental changes and security threats.
 
-7. Results
+•	Built-in web server for remote monitoring and control with no external services required.
+
+8. Results
 
 Upon deployment, the system successfully:
 
@@ -168,17 +236,19 @@ Upon deployment, the system successfully:
 
 •	Activated the fan when the temperature exceeded the threshold.
 
+•	Served a live web dashboard accessible from any browser on the local network.
 
-8. Future Improvements
+•	Provided a REST API for sensor data and remote control of actuators.
 
-•	Add Wi-Fi connectivity for remote monitoring and control.
+
+9. Future Improvements
 
 •	Integrate a rechargeable battery for power backup.
 
 •	Use advanced sensors for more accurate readings.
 
 
-9. Conclusion
+10. Conclusion
 
-The Smart Security and Environmental Monitoring System demonstrates how simple sensors and actuators can be combined to create an efficient, automated solution for safety and comfort. This project can serve as a foundation for more advanced IoT-based applications.
+The Smart Security and Environmental Monitoring System demonstrates how simple sensors and actuators can be combined with built-in Wi-Fi to create an efficient, automated IoT solution for safety and comfort. This project can serve as a foundation for more advanced IoT-based applications.
 
